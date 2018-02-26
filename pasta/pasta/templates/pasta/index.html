@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pasta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/obsidian.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <style>
+      body {
+        background-color: #282b2e;
+      }
+      code {
+        font-family: 'Inconsolata', monospace !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script src="{% static '/js/app.js' %}"></script>
+  </body>
+</html>
