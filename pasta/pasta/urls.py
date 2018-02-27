@@ -19,7 +19,8 @@ from django.urls import path
 import core.views as views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-
+    path('api/pasta/<str:slug>', views.get, name='get'),
+    path('api/pasta/', views.save, name='save'),
+    path('admin/', admin.site.urls),
 ]
