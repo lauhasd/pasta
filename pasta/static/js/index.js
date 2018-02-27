@@ -14,5 +14,6 @@ app.ports.highlight.subscribe(function(className) {
       classPrefix: '',
     });
     var content = document.querySelector(`.${className}`);
-    hljs.highlightBlock(content);
+    if (content)
+      hljs.highlightBlock(content);
 });

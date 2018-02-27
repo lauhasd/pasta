@@ -7,13 +7,69 @@
     <title>Pasta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/obsidian.min.css">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <style>
       body {
         background-color: #282b2e;
+        height: 100%;
+        margin: 0;
+        font-size: 13px;
+        font-family: 'Open Sans', sans-serif;
       }
-      code {
+      ::selection {
+        background: #ffb7b7;
+      }
+      ::-moz-selection {
+        background: #ffb7b7;
+      }
+      pre, code {
         font-family: 'Inconsolata', monospace !important;
+      }
+      textarea {
+        padding: 6px;
+        font-family: 'Inconsolata', monospace !important;
+        font-size: 16px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        border: none;
+        background-color: transparent;
+        resize: none;
+        outline: none;
+        color: white;
+        width: 100%;
+        height: calc(100vh - 6px);
+      }
+      .logo {
+        position: absolute;
+        right: 12px;
+        max-width: 48px;
+        height: auto;
+        -webkit-transition: filter .2s; /* Safari */
+        transition: filter .2s;
+      }
+      .logo:hover {
+         filter:brightness(140%);
+         cursor: pointer;
+      }
+      a {
+        text-decoration: none
+      }
+      .save-button {
+        position: absolute;
+        top: 16px;
+        right: 74px;
+        color: #fff;
+        padding: 6px 12px;
+        border: 1px solid #fff;
+        border-radius: 12px;
+        -webkit-transition: all .2s; /* Safari */
+        transition: all .2s;
+      }
+      .save-button:hover {
+        color: #ffb7b7;
+        border-color: #ffb7b7;
       }
     </style>
   </head>
