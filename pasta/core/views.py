@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
+import json
 
 from core.models import Pasta
 
@@ -9,9 +11,10 @@ def index(request):
     return render(request, 'pasta/index.html')
 
 
+@csrf_exempt
 @require_POST
 def save(request):
-    content = request.POST.get('content')
+    content = json.loads(request.body).get('content')
     if content:
         pasta = Pasta(content=content)
         pasta.save()
