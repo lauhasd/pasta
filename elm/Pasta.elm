@@ -34,6 +34,10 @@ pastaDecoder =
         (Decode.field "content" Decode.string)
 
 
+
+-- REQUESTS
+
+
 savePastaRequest : String -> Http.Request Pasta
 savePastaRequest content =
     let
@@ -43,3 +47,8 @@ savePastaRequest content =
                 |> Http.jsonBody
     in
         Http.post "/api/pasta/" body pastaDecoder
+
+
+getPastaRequest : String -> Http.Request Pasta
+getPastaRequest slug =
+    Http.get ("/api/pasta/" ++ slug) pastaDecoder

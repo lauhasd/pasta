@@ -23,8 +23,14 @@
       ::-moz-selection {
         background: #ffb7b7;
       }
-      pre, code {
+      pre > code {
+        position: absolute;
         font-family: 'Inconsolata', monospace !important;
+        font-size: 16px !important;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
       textarea {
         padding: 6px;
@@ -43,8 +49,8 @@
       }
       .logo {
         position: absolute;
-        top: 3px;
-        right: 12px;
+        top: 12px;
+        right: 24px;
         max-width: 48px;
         height: auto;
         -webkit-filter: drop-shadow(0 0 3px #000 );
@@ -62,8 +68,8 @@
       }
       .save-button {
         position: absolute;
-        top: 19px;
-        right: 74px;
+        top: 30px;
+        right: 90px;
         color: #fff;
         padding: 6px 12px;
         border: 1px solid #fff;
