@@ -14,7 +14,7 @@ def index(request, _):
 @csrf_exempt
 @require_POST
 def save(request):
-    content = json.loads(request.body).get('content')
+    content = json.loads(request.body.decode('utf-8')).get('content')
     if content:
         pasta = Pasta(content=content)
         pasta.save()
