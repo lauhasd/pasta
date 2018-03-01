@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pasta',
-    'core',
+    'pasta.core',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +121,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../dist"),
-    os.path.join(BASE_DIR, "static/"),
+    os.path.join(BASE_DIR, "dist/"),
+    os.path.join(BASE_DIR, "pasta/static/"),
 ]
+print(os.path.join(BASE_DIR, "static/"))

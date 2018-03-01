@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 import json
 
-from core.models import Pasta
+from pasta.core.models import Pasta
 
 
 def index(request, _):

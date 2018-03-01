@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-import core.views as views
+import pasta.core.views as views
 
 urlpatterns = [
     path('api/pasta/<str:slug>', views.get, name='get'),
