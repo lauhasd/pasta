@@ -24,7 +24,7 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { content = "// PASTA v0.1\n//\n// Paste here and then Pasta!"
+    { content = "// PASTA v0.1\n//\n// Paste here and hit save!"
     , slug = ""
     , state = EditPasta
     }
