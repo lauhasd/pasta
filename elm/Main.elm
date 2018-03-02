@@ -4,14 +4,21 @@ import Html exposing (Html, a, div, pre, code, img, text, textarea, program)
 import Html.Attributes exposing (class, href, src, style, title, value)
 import Html.Events exposing (onClick, onInput)
 import Http
+import Markdown
 import Navigation
-import Ports exposing (highlight)
+import Ports exposing (highlight, highlighted)
 import Pasta exposing (getPastaRequest, savePastaRequest)
+
+
+type State
+    = EditPasta
+    | ViewPasta
 
 
 type alias Model =
     { content : String
     , slug : String
+    , state : State
     }
 
 
@@ -19,6 +26,7 @@ initialModel : Model
 initialModel =
     { content = "// PASTA v0.1\n//\n// Paste here and then Pasta!"
     , slug = ""
+    , state = EditPasta
     }
 
 
@@ -28,10 +36,10 @@ init location =
 
 
 type Msg
-    = NoOp
-    | ContentChanged String
+    = ContentChanged String
     | DoSavePasta String
     | DoPastaGet String
+    | HighlightResult String
     | NewPasta
     | GetPastaResult (Result Http.Error Pasta.Pasta)
     | SavePastaResult (Result Http.Error Pasta.Pasta)
@@ -45,41 +53,53 @@ view model =
             img
                 [ src "/static/img/logo.svg"
                 , class "logo"
-                , onClick <| NewPasta
-                , title "New pasta"
+                , title "Pasta!"
                 ]
                 []
 
         saveBtn =
             a
                 [ class "save-button"
-                , href "#"
                 , title "Save"
                 , onClick <| DoSavePasta model.content
                 ]
-                [ text "Pasta!"
+                [ text "Save" ]
+
+        newBtn =
+            a
+                [ class "new-button"
+                , title "New"
+                , onClick NewPasta
                 ]
+                [ text "New" ]
     in
-        if model.slug /= "" then
-            div []
-                [ pre [ class "content", style [ ( "margin", "0" ), ( "padding", "0" ) ] ]
-                    [ code [] [ text model.content ] ]
-                , logo
-                ]
-        else
-            div []
-                [ textarea [ onInput ContentChanged, value model.content ] []
-                , logo
-                , saveBtn
-                ]
+        div []
+            [ logo
+            , (case model.state of
+                EditPasta ->
+                    div []
+                        [ textarea
+                            [ onInput ContentChanged
+                            , value model.content
+                            ]
+                            []
+                        , saveBtn
+                        ]
+
+                ViewPasta ->
+                    div [] [ highlightedContent model.content, newBtn ]
+              )
+            ]
+
+
+highlightedContent : String -> Html Msg
+highlightedContent content =
+    pre [] [ code [] [ Markdown.toHtml [] content ] ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Cmd.none )
-
         ContentChanged string ->
             ( { model | content = string }, Cmd.none )
 
@@ -97,8 +117,11 @@ update msg model =
                 (getPastaRequest model.slug)
             )
 
+        HighlightResult result ->
+            ( { model | content = result, state = ViewPasta }, Cmd.none )
+
         NewPasta ->
-            ( model
+            ( { model | state = EditPasta }
             , Navigation.newUrl "/"
             )
 
@@ -106,18 +129,23 @@ update msg model =
             ( { initialModel
                 | content = result.content
                 , slug = result.slug
+                , state = ViewPasta
               }
-            , highlight "content"
+            , highlight result.content
             )
 
         GetPastaResult (Err err) ->
             ( model, Cmd.none )
 
         SavePastaResult (Ok result) ->
-            ( { model | slug = result.slug, content = result.content }
+            ( { model
+                | slug = result.slug
+                , content = result.content
+                , state = ViewPasta
+              }
             , Cmd.batch
                 [ Navigation.newUrl <| "/" ++ result.slug
-                , highlight ""
+                , highlight result.content
                 ]
             )
 
@@ -130,18 +158,18 @@ update msg model =
                     String.dropLeft 1 location.pathname
             in
                 if slug /= "" then
-                    ( model
+                    ( { model | state = ViewPasta }
                     , Http.send
                         GetPastaResult
                         (getPastaRequest slug)
                     )
                 else
-                    ( Debug.log "" initialModel, Cmd.none )
+                    ( initialModel, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    highlighted HighlightResult
 
 
 main : Program Never Model Msg
