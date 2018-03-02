@@ -1,10 +1,10 @@
 module App exposing (..)
 
 import Html exposing (Html, a, div, pre, code, img, text, textarea, program)
-import Html.Attributes exposing (class, href, src, style, title, value)
+import Html.Attributes exposing (class, href, property, src, style, title, value)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Markdown
+import Json.Encode exposing (string)
 import Navigation
 import Ports exposing (highlight, highlighted)
 import Pasta exposing (getPastaRequest, savePastaRequest)
@@ -94,7 +94,7 @@ view model =
 
 highlightedContent : String -> Html Msg
 highlightedContent content =
-    pre [] [ code [] [ Markdown.toHtml [] content ] ]
+    pre [] [ code [ property "innerHTML" <| string content ] [] ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
