@@ -35,7 +35,6 @@
         right: 0;
       }
       textarea {
-        margin-top: 16px;
         padding: 6px;
         font-family: 'Inconsolata', monospace !important;
         font-size: 16px;
@@ -75,14 +74,19 @@
         border: 1px solid #84d084;
       }
       .new-button {
-        color: #aaa;
-        border: 1px solid #aaa;
+        color: #ddd;
+        border: 1px solid #ddd;
       }
-      .save-button, .new-button {
+      .disabled-button {
+        box-shadow: 0 0 0 black;
+        visibility: hidden;
+        top: -28px !important;
+      }
+      .save-button, .new-button, .disabled-button {
         cursor: pointer;
         position: fixed;
-        top: 76px;
-        right: 17px;
+        top: 27px;
+        right: 92px;
         padding: 6px 16px;
         border-radius: 14px;
         -webkit-transition: all .2s;
@@ -92,6 +96,35 @@
       .save-button:hover, .new-button:hover {
         color: #ddd;
         border-color: #ddd;
+      }
+      .about-box {
+        cursor: pointer;
+        position: fixed;
+        top: 8px;
+        right: 0;
+        width: 256px;
+        max-height: 256px;
+        background-color: #383b3e;
+        color: #ddd;
+        padding: 12px 12px;
+        z-index: 2002;
+        box-shadow: 0 0 15px rgba(0,0,0,.66);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        text-align: center;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+      }
+      .about-box h3 {
+        margin-top: -24px;
+      }
+      .about-box img {
+        position: relative;
+        width: 128px;
+        height: auto;
+      }
+      .about-box.hidden {
+        right: -300px;
       }
     </style>
   </head>

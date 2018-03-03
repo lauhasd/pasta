@@ -1,7 +1,24 @@
 module App exposing (..)
 
-import Html exposing (Html, a, div, pre, code, img, text, textarea, program)
-import Html.Attributes exposing (class, href, property, src, style, title, value)
+import Html
+    exposing
+        ( Html
+        , a
+        , code
+        , div
+        , h3
+        , img
+        , input
+        , li
+        , p
+        , program
+        , pre
+        , span
+        , text
+        , textarea
+        , ul
+        )
+import Html.Attributes exposing (class, href, property, src, style, title, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Http
 import Json.Encode exposing (string)
@@ -19,14 +36,21 @@ type alias Model =
     { content : String
     , slug : String
     , state : State
+    , showAbout : Bool
     }
+
+
+initialContent : String
+initialContent =
+    "// PASTA v0.1\n//\n// Paste here and hit save!"
 
 
 initialModel : Model
 initialModel =
-    { content = "// PASTA v0.1\n//\n// Paste here and hit save!"
+    { content = initialContent
     , slug = ""
     , state = EditPasta
+    , showAbout = False
     }
 
 
@@ -44,6 +68,7 @@ type Msg
     | GetPastaResult (Result Http.Error Pasta.Pasta)
     | SavePastaResult (Result Http.Error Pasta.Pasta)
     | UrlChange Navigation.Location
+    | ToggleAboutBox Bool
 
 
 view : Model -> Html Msg
@@ -53,17 +78,21 @@ view model =
             img
                 [ src "/static/img/logo.svg"
                 , class "logo"
-                , title "Pasta!"
+                , title "About"
+                , onClick <| ToggleAboutBox True
                 ]
                 []
 
         saveBtn =
-            a
-                [ class "save-button"
-                , title "Save"
-                , onClick <| DoSavePasta model.content
-                ]
-                [ text "Save" ]
+            if model.content == initialContent || model.content == "" then
+                a [ class "disabled-button", title "Save" ] [ text "Save" ]
+            else
+                a
+                    [ class "save-button"
+                    , title "Save"
+                    , onClick <| DoSavePasta model.content
+                    ]
+                    [ text "Save" ]
 
         newBtn =
             a
@@ -75,6 +104,7 @@ view model =
     in
         div []
             [ logo
+            , aboutBox model.showAbout
             , (case model.state of
                 EditPasta ->
                     div []
@@ -89,6 +119,31 @@ view model =
                 ViewPasta ->
                     div [] [ highlightedContent model.content, newBtn ]
               )
+            ]
+
+
+aboutBox : Bool -> Html Msg
+aboutBox show =
+    let
+        logo =
+            img
+                [ src "/static/img/logo.svg"
+                , title "Pasta!"
+                ]
+                []
+
+        classes =
+            case show of
+                True ->
+                    "about-box"
+
+                False ->
+                    "about-box hidden"
+    in
+        div [ class classes, onClick <| ToggleAboutBox False ]
+            [ logo
+            , h3 [] [ text "Pasta" ]
+            , p [] [ text "A dead simple pastebin for your pasting needs." ]
             ]
 
 
@@ -165,6 +220,9 @@ update msg model =
                     )
                 else
                     ( initialModel, Cmd.none )
+
+        ToggleAboutBox bool ->
+            ( { model | showAbout = bool }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
