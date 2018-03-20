@@ -42,7 +42,7 @@ type alias Model =
 
 initialContent : String
 initialContent =
-    "// PASTA v0.1\n//\n// Paste here and hit save!"
+    "// PASTA\n//\n// Paste here and hit save!"
 
 
 initialModel : Model
